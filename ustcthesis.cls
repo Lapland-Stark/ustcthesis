@@ -284,6 +284,10 @@
   setkeys = \kvsetkeys,
 }
 
+% 设置默认 \option{openany}。
+\DeclareBoolOption[false]{openright}
+\DeclareComplementaryOption{openany}{openright}
+
 % 兼容旧版本的文档类选项。
 % Reserved for compatibility until 2020-07-01.
 \DeclareVoidOption{doctor}{\ustcsetup{degree=doctor}}
@@ -304,17 +308,22 @@
 \DeclareVoidOption{bwlogo}{\ustcsetup{badge-color=black}}
 
 % 载入 \cls{ctexbook}。
-\PassOptionsToClass{openany}{ctexbook}
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 \ProcessKeyvalOptions*
 
 
 % \subsection{加载文档类和宏包}
 
+\ifustc@openright
+  \PassOptionsToClass{openright}{book}
+\else
+  \PassOptionsToClass{openany}{book}
+\fi
+
 \ifustc@output@electronic
   \PassOptionsToClass{oneside}{book}
 \fi
-\PassOptionsToPackage{quiet}{xeCJK}
+\PassOptionsToPackage{quiet}{fontspec}
 
 % 载入 \cls{ctexbook} 文档类，注意要求为 2.4.9 或更高的版本。
 \LoadClass[UTF8,a4paper,scheme=plain,zihao=-4,fontset=none]{ctexbook}[2017/04/01]
